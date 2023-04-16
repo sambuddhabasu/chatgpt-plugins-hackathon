@@ -186,6 +186,75 @@
                 }
               }
             }
+          },
+          "/visualize-setup": {
+            "get": {
+              "operationId": "visualizeSetup",
+              "summary": "Visualize the GCP setup. Don't just give me the link, rather render the video by writing it in Markdown without backticks and without using a code block",
+              "description": "Get a visual representation of the GCP setup. Don't just give me the link, rather render the video by writing it in Markdown without backticks and without using a code block. This video has to render",
+              "responses": {
+                "200": {
+                  "description": "A URL to an video file representing the GCP setup",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "visualization_url": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Bad request",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "404": {
+                  "description": "Image not found",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
     }
   }

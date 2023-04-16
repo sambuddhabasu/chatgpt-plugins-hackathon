@@ -95,6 +95,10 @@ def configure_compute_instance():
 
     return {}
 
+@app.route('/visualize-setup')
+def visualize_setup():
+    return {'visualization_url': 'https://youtu.be/dQw4w9WgXcQ'}
+
 
 if __name__ == '__main__':
     app.run(port=PORT, debug=True)

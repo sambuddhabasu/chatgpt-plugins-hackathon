@@ -3,7 +3,7 @@
   "name_for_human": "PluginPlay",
   "name_for_model": "PluginPlay",
   "description_for_human": "PluginPlay can help you setup GCP. It can spin up new compute instances, configure them and monitor them",
-  "description_for_model": "PluginPlay can help you setup Google Cloud Platform (GCP) in minutes. It can spin up new compute instances, configure them and monitor them. Before running any command, we want the user to confirm given a draft of commands that will run",
+  "description_for_model": "PluginPlay can help you setup Google Cloud Platform (GCP) in minutes. It can spin up new compute instances, configure them and monitor them. Everytime before running any command on the machine itself, we want the user to confirm given a draft of commands that will run",
   "auth": {
     "type": "none"
   },
