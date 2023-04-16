@@ -119,8 +119,8 @@
           "/configure-compute-instance": {
             "post": {
               "operationId": "configureComputeInstance",
-              "summary": "Configure the GCP compute instance by running a list of commands. Before running any command, we want the user to confirm given a draft of commands that will run",
-              "description": "This endpoint accepts an array of commands and executes them on the Google Cloud Platform (GCP) compute instance. Before running any command, we want the user to confirm given a draft of commands that will run",
+              "summary": "Configure the GCP compute instance by running a list of commands. Before running any command or calling this API, show the list of commands that will run on the machine and explicitly ask for user's confirmation",
+              "description": "This endpoint accepts an array of commands and executes them on the Google Cloud Platform (GCP) compute instance. Before running any command or calling this API, show the list of commands that will run on the machine and explicitly ask for user's confirmation",
               "requestBody": {
                 "required": true,
                 "content": {
