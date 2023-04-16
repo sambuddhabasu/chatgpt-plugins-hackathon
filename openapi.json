@@ -69,16 +69,13 @@
               },
               "responses": {
                 "200": {
-                  "description": "Instance created successfully",
+                  "description": "Instance created successfully and returns a instance URL, that users can click on to view their instance",
                   "content": {
                     "application/json": {
                       "schema": {
                         "type": "object",
                         "properties": {
-                          "message": {
-                            "type": "string"
-                          },
-                          "instance_name": {
+                          "instance_url": {
                             "type": "string"
                           }
                         }

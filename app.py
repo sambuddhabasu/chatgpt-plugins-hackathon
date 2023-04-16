@@ -73,7 +73,10 @@ def create_compute_instance():
     # Wait for the operation to complete
     GCP_ZONEOPS_CLIENT.wait(project=GCP_PROJECT_ID, zone=GCP_ZONE, operation=operation.name)
 
-    return {}
+    instance_url = 'https://console.cloud.google.com/compute/instancesDetail/zones/%s/instances/%s?project=%s&authuser=1' % (GCP_ZONE, instance_name, GCP_PROJECT_ID)
+    print(instance_url)
+
+    return {'instance_url': instance_url}
 
 @app.route('/configure-compute-instance', methods=['POST'])
 def configure_compute_instance():
