@@ -1,0 +1,47 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "PluginPlay can help you setup Google Cloud Platform (GCP) in minutes. It can spin up new compute instances, configure them and monitor them",
+      "version": "1.0.0"
+    },
+    "servers": [
+        {
+          "url": "http://localhost:8000"
+        }
+      ],
+    "paths": {
+        "/list-compute-instances": {
+            "get": {
+                "operationId": "listComputeInstances",
+                "summary": "List Google Cloud Platform Compute Engine instances",
+                "description": "Retrieve a list of Compute Engine instances in a specified zone.",
+              "responses": {
+                "200": {
+                  "description": "A JSON object containing an array of GCP instance names.",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "instances": {
+                            "type": "array",
+                            "instance": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Bad request. The request is malformed or invalid."
+                },
+                "500": {
+                  "description": "Internal server error. An error occurred while processing the request."
+                }
+              }
+            }
+          }
+    }
+  }
