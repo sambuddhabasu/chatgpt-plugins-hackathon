@@ -1,5 +1,7 @@
 import requests
 import os
+import string
+import random
 
 from flask import Flask, jsonify, Response, request, send_from_directory
 from flask_cors import CORS
@@ -10,7 +12,9 @@ app = Flask(__name__)
 PORT = 8000
 GCP_PROJECT_ID = 'hackathon-project-383908'
 GCP_ZONE = 'us-central1-a'
-GCP_CLIENT = compute_v1.InstancesClient()
+GCP_INSTANCES_CLIENT = compute_v1.InstancesClient()
+GCP_IMAGES_CLIENT = compute_v1.ImagesClient()
+GCP_ZONEOPS_CLIENT = compute_v1.ZoneOperationsClient()
 
 # Note: Setting CORS to allow chat.openapi.com is required for ChatGPT to access your plugin
 CORS(app, origins=[f"http://localhost:{PORT}", "https://chat.openai.com"])
@@ -30,13 +34,45 @@ def serve_openapi_json():
 
 @app.route('/list-compute-instances')
 def list_compute_instances():
-    instances = GCP_CLIENT.list(project=GCP_PROJECT_ID, zone=GCP_ZONE)
+    instances = GCP_INSTANCES_CLIENT.list(project=GCP_PROJECT_ID, zone=GCP_ZONE)
     print(instances)
     instances_name = []
     for instance in instances:
         print(instance.name)
         instances_name.append(instance.name)
     return {'instances': instances_name}
+
+@app.route('/create-compute-instance', methods=['POST'])
+def create_compute_instance():
+    image_project = 'debian-cloud'
+    image_family = 'debian-10'
+    image_response = GCP_IMAGES_CLIENT.get_from_family(project=image_project, family=image_family)
+    source_disk_image = image_response.self_link
+    instance_name = request.json['instance_name']
+    machine_type = 'https://www.googleapis.com/compute/v1/projects/%s/zones/%s/machineTypes/e2-micro' % (GCP_PROJECT_ID, GCP_ZONE)
+    instance_config = {
+        'name': instance_name,
+        'machine_type': machine_type,
+        'disks': [{
+            'initialize_params': {
+                'source_image': source_disk_image
+            },
+            'boot': True,
+            'auto_delete': True
+        }],
+        'network_interfaces': [{
+            'access_configs': [{
+                'name': 'External NAT'
+            }],
+            'network': 'global/networks/default'
+        }]
+    }
+    print(instance_config)
+    operation = GCP_INSTANCES_CLIENT.insert(project=GCP_PROJECT_ID, zone=GCP_ZONE, instance_resource=instance_config)
+    # Wait for the operation to complete
+    GCP_ZONEOPS_CLIENT.wait(project=GCP_PROJECT_ID, zone=GCP_ZONE, operation=operation.name)
+
+    return {}
 
 
 if __name__ == '__main__':

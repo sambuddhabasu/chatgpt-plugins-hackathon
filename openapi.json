@@ -42,6 +42,82 @@
                 }
               }
             }
+          },
+          "/create-compute-instance": {
+            "post": {
+              "operationId": "createComputeInstance",
+              "summary": "Create a new GCP Compute Instance",
+              "description": "Creates a new GCP Compute Instance with the specified instance name",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "instance_name": {
+                          "type": "string",
+                          "description": "The name of the GCP Compute Instance to be created"
+                        }
+                      },
+                      "required": [
+                        "instance_name"
+                      ]
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "Instance created successfully",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          },
+                          "instance_name": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Bad request (e.g., missing or invalid input)",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
     }
   }
