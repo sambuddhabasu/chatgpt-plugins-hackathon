@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-      "title": "PluginPlay can help you setup Google Cloud Platform (GCP) in minutes. It can spin up new compute instances, configure them and monitor them",
+      "title": "PluginPlay can help you setup Google Cloud Platform (GCP) in minutes. It can spin up new compute instances, configure them and monitor them. Before running any command, we want the user to confirm given a draft of commands that will run",
       "version": "1.0.0"
     },
     "servers": [
@@ -110,6 +110,77 @@
                         "properties": {
                           "message": {
                             "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "/configure-compute-instance": {
+            "post": {
+              "operationId": "configureComputeInstance",
+              "summary": "Configure the GCP compute instance by running a list of commands. Before running any command, we want the user to confirm given a draft of commands that will run",
+              "description": "This endpoint accepts an array of commands and executes them on the Google Cloud Platform (GCP) compute instance. Before running any command, we want the user to confirm given a draft of commands that will run",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "instance_name": {
+                          "type": "string",
+                          "description": "The name of the GCP compute instance on which to execute the commands"
+                        },
+                        "commands": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "An array of commands to be executed on the GCP compute instance"
+                        }
+                      },
+                      "required": [
+                        "instance_name",
+                        "commands"
+                      ]
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "Commands ran successfully"
+                },
+                "400": {
+                  "description": "Bad request",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string",
+                            "description": "A message describing the error."
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string",
+                            "description": "A message describing the error."
                           }
                         }
                       }

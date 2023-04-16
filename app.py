@@ -2,6 +2,7 @@ import requests
 import os
 import string
 import random
+import subprocess
 
 from flask import Flask, jsonify, Response, request, send_from_directory
 from flask_cors import CORS
@@ -71,6 +72,23 @@ def create_compute_instance():
     operation = GCP_INSTANCES_CLIENT.insert(project=GCP_PROJECT_ID, zone=GCP_ZONE, instance_resource=instance_config)
     # Wait for the operation to complete
     GCP_ZONEOPS_CLIENT.wait(project=GCP_PROJECT_ID, zone=GCP_ZONE, operation=operation.name)
+
+    return {}
+
+@app.route('/configure-compute-instance', methods=['POST'])
+def configure_compute_instance():
+    print(request.json)
+    instance_name = request.json['instance_name']
+    commands = request.json['commands']
+    for command in commands:
+        gcloud_command = ['gcloud', 'compute', 'ssh', instance_name, '--zone', GCP_ZONE, '--command', command]
+        print(gcloud_command)
+
+        result = subprocess.run(gcloud_command, capture_output=True, text=True)
+        print(result.stdout)
+        if result.returncode != 0:
+            print(result.stderr)
+            return {'message': result.stderr}, 400
 
     return {}
 
